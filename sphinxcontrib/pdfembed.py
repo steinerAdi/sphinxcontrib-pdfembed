@@ -36,8 +36,25 @@ def pdfembed_role(typ, rawtext, text, lineno, inliner, options={}, content=[]):
     node = nodes.raw('', pdfembed_html(pdfembed_specs), format='html')
     return [node], []
 
+
+def pdf_link(typ, rawtext, text, lineno, inliner, options={}, content=[]):
+    """
+    Get iframe specifications and generate the associate HTML code for the pdf iframe.
+    """
+    # parse and init variables
+    text           = text.replace(' ', '')
+    pdfembed_specs = {}
+    print()
+    # read specs
+    for component in text.split(','):
+         pdfembed_specs[component.split(':')[0]] = component.split(':')[1]
+    # build node from pdf iframe html code
+    node = nodes.raw('', pdfembed_html("<p> Test <\p>"), format='html')
+    return [node], []
+
 def setup(app):
     """
     Set up the app with the extension function
     """
     app.add_role('pdfembed', pdfembed_role)
+    app.add_role('pdflink', pdf_link)
